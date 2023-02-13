@@ -43,6 +43,29 @@ For calibration transfer analysis, 20 samples held out from the spectral subspac
 [^1]: For Cubist, PCA compression is performed before model fitting using `cumvar= 99.99%` on the reference space (KSSL subset) with all the RT instruments projected onto it.  
 [^2]: Soil properties are `log` transformed if `-3 < skewness or kurtosis > 3`. Check descriptive statistics for a summary. In addition, the performance metrics are reported on log space for those cases.  
 
-Statistical analysis is performed on `RMSE` values using non-parametric `Kruskal-Wallis` test for comparing preprocessing and model types at a significance level of 95%. However, Lin's CCC are displayed for the sake of visualization while the statistical tests are performed on the RMSE values.
+Statistical analysis is performed on `RMSE` values using non-parametric `Kruskal-Wallis` test for comparing preprocessing and model types at a significance level of 95%. While the statistical tests are performed on the RMSE values, Lin's CCC is displayed for the sake of visualization as it both encompasses accuracy and bias trend.
+
+## Descriptive statistics
+
+Original scale:  
+```{r beforeLog, echo=F, message=F, warning=F}
+read_csv("outputs/RT_wetchem_summary_beforeLog.csv") %>%
+  filter(source == "ALL") %>%
+  select(-source) %>%
+  knitr::kable(digits = 2)
+```
+
+After natural-log transformation:  
+```{r afterLog, echo=F, message=F, warning=F}
+read_csv("outputs/RT_wetchem_summary_afterLog.csv") %>%
+  filter(source == "ALL") %>%
+  select(-source) %>%
+  knitr::kable(digits = 2)
+```
+
+TOC and K are displayed in log scale but with x-axis labels in original unit:  
+<img src="outputs/plot_soil_properties_distribution.png" width=100% heigth=100%>  
 
 ## Internal 10-fold Cross-validation
+
+## Calibration transfer

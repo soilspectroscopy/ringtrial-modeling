@@ -41,11 +41,35 @@ model types are evaluated with a subset of the KSSL with 15,000 samples.
 
 Statistical analysis is performed on `RMSE` values using non-parametric
 `Kruskal-Wallis` test for comparing preprocessing and model types at a
-significance level of 95%. However, Lin’s CCC are displayed for the sake
-of visualization while the statistical tests are performed on the RMSE
-values.
+significance level of 95%. While the statistical tests are performed on
+the RMSE values, Lin’s CCC is displayed for the sake of visualization as
+it both encompasses accuracy and bias trend.
+
+## Descriptive statistics
+
+Original scale:
+
+| soil_property    |   n |  min |  mean |    sd | median |   iqr |   max | skewness | kurtosis |
+|:-----------------|----:|-----:|------:|------:|-------:|------:|------:|---------:|---------:|
+| carbon_tot_perc  |  69 | 0.09 |  2.76 |  6.13 |   1.81 |  2.03 | 49.10 |     6.57 |    49.08 |
+| clay_perc        |  69 | 0.00 | 22.61 | 11.80 |  21.09 | 14.40 | 49.30 |     0.21 |     2.40 |
+| pH_H20           |  70 | 3.35 |  6.37 |  1.22 |   6.09 |  1.93 |  8.57 |    -0.05 |     2.14 |
+| potassium_cmolkg |  69 | 0.05 |  0.56 |  0.44 |   0.43 |  0.51 |  2.84 |     2.33 |    11.58 |
+
+After natural-log transformation:
+
+| soil_property    |   n |   min |  mean |   sd | median |  iqr |  max | skewness | kurtosis |
+|:-----------------|----:|------:|------:|-----:|-------:|-----:|-----:|---------:|---------:|
+| carbon_tot_perc  |  69 | -2.39 |  0.33 | 1.11 |   0.59 | 1.24 | 3.89 |     0.01 |     3.90 |
+| potassium_cmolkg |  69 | -3.05 | -0.84 | 0.77 |  -0.84 | 1.02 | 1.04 |    -0.37 |     3.23 |
+
+TOC and K are displayed in log scale but with x-axis labels in original
+unit:  
+<img src="outputs/plot_soil_properties_distribution.png" width=100% heigth=100%>
 
 ## Internal 10-fold Cross-validation
+
+## Calibration transfer
 
 [^1]: For Cubist, PCA compression is performed before model fitting
     using `cumvar= 99.99%` on the reference space (KSSL subset) with all
