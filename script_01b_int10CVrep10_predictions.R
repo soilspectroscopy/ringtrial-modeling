@@ -10,10 +10,14 @@ library("pls")
 library("future")
 
 ## Folders
-mnt.dir <- "~/projects/mnt-ringtrial/"
+mnt.dir <- "~/mnt-ringtrial/"
+# mnt.dir <- "~/projects/mnt-ringtrial/"
 dir.preprocessed <- paste0(mnt.dir, "preprocessed/")
 dir.output <- paste0(mnt.dir, "predictions/int10CVrep10/")
 if(!dir.exists(dir.output)){dir.create(dir.output)}
+
+## Number of cores available
+n.cores <- 30
 
 ## Reading organization codes
 metadata <- read_xlsx(paste0(mnt.dir, "Spectrometers_Metadata.xlsx"), 1)
@@ -178,7 +182,7 @@ for(i in 1:nrow(modeling.combinations)) {
              .before = 1)
   }
   
-  future::plan(multisession, workers = 5, gc = TRUE)
+  future::plan(multisession, workers = n.cores, gc = TRUE)
   
   cv.results <- future_map2_dfr(.x = modeling.folds$splits,
                                 .y = modeling.folds$idfull,
@@ -210,7 +214,7 @@ for(i in 1:nrow(modeling.combinations)) {
   
   keep.objects <- c("mnt.dir", "dir.preprocessed", "dir.output",
                     "metadata", "organization", "code", "new_codes",
-                    "modeling.combinations")
+                    "modeling.combinations", "n.cores")
   
   remove.objects <- ls()[-grep(paste(keep.objects, collapse = "|"), ls())]
   rm(list = remove.objects)
