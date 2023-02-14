@@ -14,7 +14,6 @@ mnt.dir <- "~/mnt-ringtrial/"
 # mnt.dir <- "~/projects/mnt-ringtrial/"
 dir.preprocessed <- paste0(mnt.dir, "preprocessed/")
 dir.output <- paste0(mnt.dir, "predictions/int10CVrep10/")
-if(!dir.exists(dir.output)){dir.create(dir.output)}
 
 ## Number of cores available
 n.cores <- 30
