@@ -7,8 +7,11 @@ if(!dir.exists("outputs")){dir.create("outputs")}
 ## Mounted disck for storing big files
 mnt.dir <- "~/projects/mnt-ringtrial/"
 
-## Creating predictions folders
+## Creating predictions folder
 if(!dir.exists(paste0(mnt.dir, "predictions"))){dir.create(paste0(mnt.dir, "predictions"))}
+
+## Creating performance folder
+if(!dir.exists(paste0(mnt.dir, "performance"))){dir.create(paste0(mnt.dir, "performance"))}
 
 ## Copying map and summary statistics tables
 prep.dir <- "~/projects/soilspec4gg-mac/ringtrial-prep/"

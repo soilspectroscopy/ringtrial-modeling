@@ -150,7 +150,7 @@ for(i in 1:nrow(modeling.combinations)) {
                                     spectra = I(training.predictors))
     
     pls.model <- plsr(target ~ spectra, data = pls.training.data, ncomp = maxcomps,
-                      scale = FALSE, center = FALSE)
+                      scale = TRUE, center = TRUE)
     
     # Evaluation
     
