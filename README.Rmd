@@ -68,4 +68,8 @@ TOC and K are displayed in log scale but with x-axis labels in original unit:
 
 ## Internal 10-fold Cross-validation
 
+Tabular information is provided at `outputs/tab_int10CVrep10_performance_metrics.csv`.
+
+<img src="outputs/plot_int10CVrep10_performance_instruments.png" width=100% heigth=100%>
+
 ## Calibration transfer

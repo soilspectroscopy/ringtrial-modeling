@@ -69,6 +69,11 @@ unit:
 
 ## Internal 10-fold Cross-validation
 
+Tabular information is provided at
+`outputs/tab_int10CVrep10_performance_metrics.csv`.
+
+<img src="outputs/plot_int10CVrep10_performance_instruments.png" width=100% heigth=100%>
+
 ## Calibration transfer
 
 [^1]: For Cubist, PCA compression is performed before model fitting
