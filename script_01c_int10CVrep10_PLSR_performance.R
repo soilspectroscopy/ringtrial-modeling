@@ -104,7 +104,7 @@ for(i in 1:nrow(modeling.combinations)) {
 performance.metrics <- Reduce(bind_rows, predictions.list)
 
 write_csv(performance.metrics,
-          paste0(dir.performance, "tab_int10CVrep10_perf_instruments_components.csv"))
+          paste0(dir.performance, "tab_int10CVrep10_PLSR_perf_instruments_components.csv"))
 
 performance.metrics.best <- performance.metrics %>%
   group_by(organization, soil_property, prep_transform, train, prep_spectra) %>%
@@ -113,7 +113,7 @@ performance.metrics.best <- performance.metrics %>%
   ungroup()
 
 write_csv(performance.metrics.best,
-          paste0("outputs/tab_int10CVrep10_performance_metrics.csv"))
+          paste0("outputs/tab_int10CVrep10_PLSR_performance_metrics.csv"))
 
 ## Visualization
 
@@ -129,6 +129,6 @@ p.metrics.inst <- performance.metrics.best %>%
   theme(legend.position = "bottom") +
   guides(fill = guide_legend(nrow = 1, byrow = TRUE)); p.metrics.inst
 
-ggsave(paste0("outputs/plot_int10CVrep10_performance_instruments.png"),
+ggsave(paste0("outputs/plot_int10CVrep10_PLSR_performance_instruments.png"),
        p.metrics.inst, dpi = 300, width = 8, height = 7,
        units = "in", scale = 1)
