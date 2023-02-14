@@ -72,7 +72,7 @@ unit:
 Tabular information is provided at
 `outputs/tab_int10CVrep10_performance_metrics.csv`.
 
-<img src="outputs/plot_int10CVrep10_performance_instruments.png" width=100% heigth=100%>
+<img src="outputs/plot_int10CVrep10_PLSR_performance_instruments.png" width=100% heigth=100%>
 
 ## Calibration transfer
 
