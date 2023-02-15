@@ -81,7 +81,7 @@ performance.metrics.best <- performance.metrics %>%
   ungroup()
 
 write_csv(performance.metrics.best,
-          paste0("outputs/tab_CT-KSSL_PLSR_performance_metrics.csv"))
+          paste0("outputs/tab_CT-KSSL_PLSR_10CVrep1_performance_metrics.csv"))
 
 ## Visualization
 

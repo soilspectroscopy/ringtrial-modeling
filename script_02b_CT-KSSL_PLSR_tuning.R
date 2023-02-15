@@ -25,7 +25,7 @@ modeling.combinations
 
 ## Automated prediction
 
-i=8
+i=1
 for(i in 1:nrow(modeling.combinations)) {
   
   # Iterators
@@ -151,7 +151,7 @@ for(i in 1:nrow(modeling.combinations)) {
     pls.testing.format <- data.frame(target = I(testing.outcome),
                                      spectra = I(testing.predictors))
     
-    test <- predict(pls.model, newdata = pls.testing.format) %>%
+    predict(pls.model, newdata = pls.testing.format) %>%
       as.data.frame() %>%
       as_tibble() %>%
       rename_with(~paste0("prediction_", seq(1, maxcomps, by=1), "comp"), everything()) %>%
