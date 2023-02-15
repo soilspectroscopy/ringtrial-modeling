@@ -12,6 +12,7 @@ mnt.dir <- "~/mnt-ringtrial/"
 if(!dir.exists(paste0(mnt.dir, "predictions"))){dir.create(paste0(mnt.dir, "predictions"))}
 if(!dir.exists(paste0(mnt.dir, "predictions/int10CVrep10"))){dir.create(paste0(mnt.dir, "predictions/int10CVrep10"))}
 if(!dir.exists(paste0(mnt.dir, "predictions/CT-KSSL_PLSR"))){dir.create(paste0(mnt.dir, "predictions/CT-KSSL_PLSR"))}
+if(!dir.exists(paste0(mnt.dir, "predictions/CT-KSSL_MBL"))){dir.create(paste0(mnt.dir, "predictions/CT-KSSL_MBL"))}
 
 ## Creating performance folder
 if(!dir.exists(paste0(mnt.dir, "performance"))){dir.create(paste0(mnt.dir, "performance"))}
