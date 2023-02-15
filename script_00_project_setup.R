@@ -29,3 +29,7 @@ file.copy(from = map.file, to = paste0("outputs/", basename(map.file)), overwrit
 file.copy(from = distribution.plot.file, to = paste0("outputs/", basename(distribution.plot.file)), overwrite = T)
 file.copy(from = summary.original.file, to = paste0("outputs/", basename(summary.original.file)), overwrite = T)
 file.copy(from = summary.log.file, to = paste0("outputs/", basename(summary.log.file)), overwrite = T)
+
+## Copying list of test ids
+sst.ids <- paste0(prep.dir, "outputs/sst_subsets/RT_sst_ids.qs")
+test.ids <- paste0(prep.dir, "outputs/sst_subsets/RT_test_ids.qs")

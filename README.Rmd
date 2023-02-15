@@ -73,3 +73,28 @@ Tabular information is provided at `outputs/tab_int10CVrep10_performance_metrics
 <img src="outputs/plot_int10CVrep10_PLSR_performance_instruments.png" width=100% heigth=100%>
 
 ## Calibration transfer
+
+### PLSR
+
+Calibration performance
+
+```{r CT-KSSL-PLSR, echo=F, message=F, warning=F}
+read_csv("outputs/tab_CT-KSSL_PLSR_10CVrep1_performance_metrics.csv") %>%
+  select(-train) %>%
+  rename(comps = components) %>%
+  knitr::kable(digits = 2)
+```
+
+Test (n=20) performance
+
+### MBL
+
+Calibration performance
+
+Test (n=20) performance
+
+### Cubist
+
+Calibration performance
+
+Test (n=20) performance

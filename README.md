@@ -76,6 +76,55 @@ Tabular information is provided at
 
 ## Calibration transfer
 
+### PLSR
+
+Calibration performance
+
+| soil_property    | prep_transform   | prep_spectra    | comps |     n | rmse | bias |  rsq |  ccc |  rpd | rpiq |
+|:-----------------|:-----------------|:----------------|------:|------:|-----:|-----:|-----:|-----:|-----:|-----:|
+| carbon_org_perc  | logTransform     | BOC             |    30 | 14969 | 0.43 |    0 | 0.95 | 0.97 | 4.39 | 5.87 |
+| carbon_org_perc  | logTransform     | raw             |    30 | 14969 | 0.43 |    0 | 0.95 | 0.97 | 4.40 | 5.88 |
+| carbon_org_perc  | logTransform     | SG1stDer        |    30 | 14969 | 0.41 |    0 | 0.95 | 0.98 | 4.69 | 6.27 |
+| carbon_org_perc  | logTransform     | SNV             |    30 | 14969 | 0.43 |    0 | 0.95 | 0.97 | 4.43 | 5.93 |
+| carbon_org_perc  | logTransform     | SNVplusSG1stDer |    30 | 14969 | 0.41 |    0 | 0.95 | 0.98 | 4.70 | 6.29 |
+| carbon_org_perc  | logTransform     | SST             |    30 | 14969 | 0.43 |    0 | 0.95 | 0.97 | 4.43 | 5.93 |
+| carbon_org_perc  | logTransform     | wavelet         |    30 | 14969 | 0.41 |    0 | 0.95 | 0.98 | 4.63 | 6.20 |
+| clay_perc        | withoutTransform | BOC             |    30 | 14888 | 5.92 |    0 | 0.86 | 0.92 | 2.64 | 3.75 |
+| clay_perc        | withoutTransform | raw             |    30 | 14888 | 5.85 |    0 | 0.86 | 0.92 | 2.67 | 3.79 |
+| clay_perc        | withoutTransform | SG1stDer        |    30 | 14888 | 5.34 |    0 | 0.88 | 0.94 | 2.93 | 4.15 |
+| clay_perc        | withoutTransform | SNV             |    30 | 14888 | 5.99 |    0 | 0.85 | 0.92 | 2.61 | 3.70 |
+| clay_perc        | withoutTransform | SNVplusSG1stDer |    30 | 14888 | 5.45 |    0 | 0.88 | 0.94 | 2.87 | 4.07 |
+| clay_perc        | withoutTransform | SST             |    30 | 14888 | 5.99 |    0 | 0.85 | 0.92 | 2.61 | 3.70 |
+| clay_perc        | withoutTransform | wavelet         |    30 | 14888 | 5.39 |    0 | 0.88 | 0.94 | 2.90 | 4.12 |
+| pH_H20           | withoutTransform | BOC             |    30 | 15000 | 0.56 |    0 | 0.81 | 0.90 | 2.30 | 3.80 |
+| pH_H20           | withoutTransform | raw             |    30 | 15000 | 0.57 |    0 | 0.81 | 0.89 | 2.28 | 3.77 |
+| pH_H20           | withoutTransform | SG1stDer        |    30 | 15000 | 0.52 |    0 | 0.84 | 0.91 | 2.51 | 4.15 |
+| pH_H20           | withoutTransform | SNV             |    30 | 15000 | 0.56 |    0 | 0.81 | 0.90 | 2.30 | 3.81 |
+| pH_H20           | withoutTransform | SNVplusSG1stDer |    30 | 15000 | 0.52 |    0 | 0.84 | 0.91 | 2.49 | 4.11 |
+| pH_H20           | withoutTransform | SST             |    30 | 15000 | 0.56 |    0 | 0.81 | 0.90 | 2.30 | 3.81 |
+| pH_H20           | withoutTransform | wavelet         |    30 | 15000 | 0.52 |    0 | 0.84 | 0.91 | 2.47 | 4.08 |
+| potassium_cmolkg | logTransform     | BOC             |    30 | 15000 | 0.68 |    0 | 0.63 | 0.77 | 1.65 | 2.15 |
+| potassium_cmolkg | logTransform     | raw             |    30 | 15000 | 0.68 |    0 | 0.63 | 0.78 | 1.65 | 2.16 |
+| potassium_cmolkg | logTransform     | SG1stDer        |    30 | 15000 | 0.64 |    0 | 0.67 | 0.80 | 1.73 | 2.27 |
+| potassium_cmolkg | logTransform     | SNV             |    30 | 15000 | 0.67 |    0 | 0.64 | 0.78 | 1.66 | 2.18 |
+| potassium_cmolkg | logTransform     | SNVplusSG1stDer |    30 | 15000 | 0.64 |    0 | 0.67 | 0.80 | 1.74 | 2.28 |
+| potassium_cmolkg | logTransform     | SST             |    30 | 15000 | 0.67 |    0 | 0.64 | 0.78 | 1.66 | 2.18 |
+| potassium_cmolkg | logTransform     | wavelet         |    30 | 15000 | 0.65 |    0 | 0.66 | 0.80 | 1.71 | 2.24 |
+
+Test (n=20) performance
+
+### MBL
+
+Calibration performance
+
+Test (n=20) performance
+
+### Cubist
+
+Calibration performance
+
+Test (n=20) performance
+
 [^1]: For Cubist, PCA compression is performed before model fitting
     using `cumvar= 99.99%` on the reference space (KSSL subset) with all
     the RT instruments projected onto it.

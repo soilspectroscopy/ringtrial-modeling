@@ -115,7 +115,7 @@ for(i in 1:nrow(modeling.combinations)) {
   # Setting a lower bound (less than 0.05% of the data lies lower than 0.01) for any soil property.
   # zero values must be replaced because of log transformation.
   train.preprocessed <- train.preprocessed %>%
-    mutate(!!isoil_property := ifelse(!!as.name(isoil_property) < 0.01, NA, !!as.name(isoil_property))) %>%
+    mutate(!!isoil_property := ifelse(!!as.name(isoil_property) <= 0.01, NA, !!as.name(isoil_property))) %>%
     filter(!is.na(!!as.name(isoil_property)))
    
   # Recipe model 
