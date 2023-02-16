@@ -96,7 +96,6 @@ for(i in 1:nrow(modeling.combinations)) {
 }
 
 ## Exporting summary of prediction performance
-lapply(predictions.list, head)
 
 performance.metrics <- Reduce(bind_rows, predictions.list) %>%
   relocate(ct_subset, .after = organization) %>%
@@ -122,7 +121,7 @@ p.ccc <- ggplot(data) +
                show.legend = F) +
   facet_wrap(~soil_property, ncol = 1) +
   labs(x = "", y = "Lin's CCC", color = "") +
-  ylim(-0.5, 1) +
+  ylim(-0.2, 1) +
   coord_flip() +
   theme_light() +
   theme(legend.position = "bottom"); p.ccc

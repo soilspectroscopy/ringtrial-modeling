@@ -7,6 +7,8 @@ library("readxl")
 library("pls")
 library("qs")
 
+options(scipen = 999)
+
 ## Folders
 mnt.dir <- "~/mnt-ringtrial/"
 # mnt.dir <- "~/projects/mnt-ringtrial/"

@@ -111,7 +111,7 @@ p.ccc <- ggplot(data) +
                show.legend = F) +
   facet_wrap(~soil_property, ncol = 1) +
   labs(x = "", y = "Lin's CCC", color = "") +
-  ylim(-0.5, 1) +
+  ylim(-0.2, 1) +
   coord_flip() +
   theme_light() +
   theme(legend.position = "bottom"); p.ccc
