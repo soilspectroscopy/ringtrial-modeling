@@ -9,7 +9,7 @@ library("qs")
 mnt.dir <- "~/mnt-ringtrial/"
 # mnt.dir <- "~/projects/mnt-ringtrial/"
 dir.preprocessed <- paste0(mnt.dir, "preprocessed/")
-dir.predictions <- paste0(mnt.dir, "predictions/CT-KSSL_PLSR/")
+dir.predictions <- paste0(mnt.dir, "predictions/CT-KSSL_MBL/")
 
 ## Modeling combinations
 modeling.combinations <- read_csv("outputs/tab_CT-KSSL_PLSR_10CVrep1_performance_metrics.csv")
@@ -37,14 +37,14 @@ for(i in 1:nrow(modeling.combinations)) {
     
     predictions <- qread(paste0(dir.predictions,
                                 "tab_predictions_",
-                                itrain, "_PLSR_",
+                                itrain, "_MBL_",
                                 isoil_property, "_",
                                 iprep_transfom, "_",
                                 iprep_spectra, ".qs")) %>%
       filter(sample_id %in% test.ids)
     
     predictions.performance <- predictions %>%
-      group_by(organization, ct_subset) %>%
+      group_by(organization, ct_subset, diss_method, k_diss) %>%
       summarise(n = n(),
                 rmse = rmse_vec(truth = observed, estimate = predicted),
                 bias = msd_vec(truth = observed, estimate = predicted),
@@ -52,20 +52,23 @@ for(i in 1:nrow(modeling.combinations)) {
                 ccc = ccc_vec(truth = observed, estimate = predicted, bias = T),
                 rpd = rpd_vec(truth = observed, estimate = predicted),
                 rpiq = rpiq_vec(truth = observed, estimate = predicted),
-                .groups = "drop")
+                .groups = "drop") %>%
+      group_by(organization, ct_subset) %>%
+      summarise(across(all_of(c("n", "rmse", "bias", "rsq", "ccc", "rpd", "rpiq")),
+                       mean), .groups = "drop")
     
   } else {
     
     predictions <- qread(paste0(dir.predictions,
                                 "tab_predictions_",
-                                itrain, "_PLSR_",
+                                itrain, "_MBL_",
                                 isoil_property, "_",
                                 iprep_transfom, "_",
                                 iprep_spectra, ".qs")) %>%
       filter(sample_id %in% test.ids)
     
     predictions.performance <- predictions %>%
-      group_by(organization) %>%
+      group_by(organization, diss_method, k_diss) %>%
       summarise(n = n(),
                 rmse = rmse_vec(truth = observed, estimate = predicted),
                 bias = msd_vec(truth = observed, estimate = predicted),
@@ -73,7 +76,10 @@ for(i in 1:nrow(modeling.combinations)) {
                 ccc = ccc_vec(truth = observed, estimate = predicted, bias = T),
                 rpd = rpd_vec(truth = observed, estimate = predicted),
                 rpiq = rpiq_vec(truth = observed, estimate = predicted),
-                .groups = "drop")
+                .groups = "drop") %>%
+      group_by(organization) %>%
+      summarise(across(all_of(c("n", "rmse", "bias", "rsq", "ccc", "rpd", "rpiq")),
+                       mean), .groups = "drop")
     
   }
   
@@ -90,6 +96,7 @@ for(i in 1:nrow(modeling.combinations)) {
 }
 
 ## Exporting summary of prediction performance
+lapply(predictions.list, head)
 
 performance.metrics <- Reduce(bind_rows, predictions.list) %>%
   relocate(ct_subset, .after = organization) %>%
@@ -99,12 +106,16 @@ performance.metrics <- performance.metrics %>%
   filter(!(ct_subset %in% c("beforeSST"))) %>%
   select(-ct_subset)
 
+performance.metrics %>%
+  select(all_of(c("n", "rmse", "bias", "rsq", "ccc", "rpd", "rpiq"))) %>%
+  summarise_all(function(x) {sum(is.na(x))})
+
 write_csv(performance.metrics,
-          paste0("outputs/tab_CT-KSSL_PLSR_test_performance.csv"))
+          paste0("outputs/tab_CT-KSSL_MBL_test_performance.csv"))
 
 ## Visualization
 
-data <- read_csv(paste0("outputs/tab_CT-KSSL_PLSR_test_performance.csv"))
+data <- read_csv(paste0("outputs/tab_CT-KSSL_MBL_test_performance.csv"))
 
 p.ccc <- ggplot(data) +
   geom_boxplot(aes(x = prep_spectra, y = ccc, color = prep_spectra),
@@ -116,6 +127,6 @@ p.ccc <- ggplot(data) +
   theme_light() +
   theme(legend.position = "bottom"); p.ccc
 
-ggsave(paste0("outputs/plot_CT-KSSL_PLSR_test_performance.png"),
+ggsave(paste0("outputs/plot_CT-KSSL_MBL_test_performance.png"),
        p.ccc, dpi = 300, width = 8, height = 7,
        units = "in", scale = 1)

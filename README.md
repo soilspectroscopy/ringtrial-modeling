@@ -113,11 +113,13 @@ Calibration performance
 
 Test (n=20) performance
 
+<img src="outputs/plot_CT-KSSL_PLSR_test_performance.png" width=100% heigth=100%>
+
 ### MBL
 
-Calibration performance
-
 Test (n=20) performance
+
+<img src="outputs/plot_CT-KSSL_MBL_test_performance.png" width=100% heigth=100%>
 
 ### Cubist
 
