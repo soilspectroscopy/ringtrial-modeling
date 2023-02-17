@@ -80,7 +80,7 @@ for(i in 1:nrow(modeling.combinations)) {
     mutate(!!isoil_property := ifelse(!!as.name(isoil_property) < 0.01, NA, !!as.name(isoil_property))) %>%
     filter(!is.na(!!as.name(isoil_property))) %>%
     vfold_cv(v = 10, repeats = 1) %>%
-    mutate(idfull = id) # Adjust with repeats
+    unite(idfull, starts_with("id"), sep = "_")
   
   rm(preprocessed)
   gc()
