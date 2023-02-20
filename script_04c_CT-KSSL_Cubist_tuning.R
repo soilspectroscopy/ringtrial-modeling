@@ -18,17 +18,16 @@ mnt.dir <- "~/mnt-ringtrial/"
 dir.preprocessed <- paste0(mnt.dir, "preprocessed/")
 dir.pca <- paste0(mnt.dir, "pca/")
 dir.predictions <- paste0(mnt.dir, "predictions/CT-KSSL_Cubist/")
+dir.hyperparameters <- paste0(mnt.dir, "performance/cubist_hyperparameters/")
 
 ## Number of cores available
-n.cores <- 30 # We are running 10-fold CV with 1 rep
+n.cores <- 15 # We are running 10-fold CV with 1 rep
 
 ## Modeling combinations
 modeling.combinations <- read_csv("outputs/modeling_combinations_CT-KSSL_Cubist.csv")
 modeling.combinations
 
 ## Automated calibration with 10-fold cross-validation
-
-hyperparameters.list <- list()
 
 i=1
 for(i in 1:nrow(modeling.combinations)) {
@@ -178,8 +177,33 @@ for(i in 1:nrow(modeling.combinations)) {
     filter(committees == pull(best.hyperparameters, committees)) %>%
     pivot_wider(names_from = ".metric", values_from = "mean")
   
-  hyperparameters.list[[i]] <- left_join(best.hyperparameters, best.metrics,
-                                         by = c("committees", "neighbors"))
+  best.hyperparameters <- left_join(best.hyperparameters, best.metrics,
+                                    by = c("committees", "neighbors"))
+  
+  qsave(best.hyperparameters,
+        paste0(dir.hyperparameters,
+               "tab_best_hp_10CVrep1_",
+               itrain, "_",
+               isoil_property, "_",
+               iprep_transform, "_",
+               iprep_spectra, ".qs"))
+  
+  all.hyperparameters <- collect_metrics(cubist.fit.tune) %>%
+    select(committees, neighbors, .metric, mean) %>%
+    pivot_wider(names_from = ".metric", values_from = "mean") %>%
+    mutate(soil_property = isoil_property,
+           prep_transform = iprep_transform,
+           train = itrain,
+           prep_spectra = iprep_spectra) %>%
+    relocate(soil_property, prep_transform, train, prep_spectra, .before = committees)
+  
+  qsave(all.hyperparameters,
+        paste0(dir.hyperparameters,
+               "tab_all_hp_10CVrep1_",
+               itrain, "_",
+               isoil_property, "_",
+               iprep_transform, "_",
+               iprep_spectra, ".qs"))
   
   # CV10rep10 predictions
   # summarize	= TRUE. Should metrics be summarized (mean) over resamples?
@@ -206,7 +230,8 @@ for(i in 1:nrow(modeling.combinations)) {
   # Cleaning iteration and freeing memory
   
   keep.objects <- c("mnt.dir", "dir.preprocessed", "dir.predictions",
-                    "dir.pca", "n.cores", "modeling.combinations",
+                    "dir.pca", "dir.hyperparameters",
+                    "n.cores", "modeling.combinations",
                     "hyperparameters.list")
   
   remove.objects <- ls()[-grep(paste(keep.objects, collapse = "|"), ls())]
@@ -214,7 +239,3 @@ for(i in 1:nrow(modeling.combinations)) {
   gc()
   
 }
-
-final.hyperparameters <- Reduce(bind_rows, hyperparameters.list)
-
-write_csv(final.hyperparameters, "outputs/tab_CT-KSSL_Cubist_10CVrep1_performance_metrics.csv")

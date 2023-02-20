@@ -99,4 +99,10 @@ Test (n=20) performance
 
 Calibration performance
 
+```{r CT-KSSL-Cubist, echo=F, message=F, warning=F}
+read_csv("outputs/tab_CT-KSSL_Cubist_10CVrep1_performance_metrics.csv") %>%
+  select(-train) %>%
+  knitr::kable(digits = 2)
+```
+
 Test (n=20) performance
