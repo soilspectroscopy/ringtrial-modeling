@@ -16,7 +16,7 @@ dir.hyperparameters <- paste0(mnt.dir, "performance/cubist_hyperparameters/")
 dir.performance <- paste0(mnt.dir, "performance/")
 
 ## Modeling combinations
-modeling.combinations <- read_csv("outputs/modeling_combinations_CT-KSSL_MBL.csv")
+modeling.combinations <- read_csv("outputs/modeling_combinations_CT-KSSL_Cubist.csv")
 modeling.combinations
 
 ## Hyperparameters
@@ -56,7 +56,7 @@ all.hyperparameters %>%
 ## Reading predictions for calculating extra metrics
 
 predictions.list <- list()
-i=1
+i=8
 
 for(i in 1:nrow(modeling.combinations)) {
   
@@ -89,7 +89,7 @@ for(i in 1:nrow(modeling.combinations)) {
   
   predictions.list[[i]] <- predictions.performance %>%
     mutate(soil_property = isoil_property,
-           prep_transform = iprep_transfom,
+           prep_transform = iprep_transform,
            train = itrain,
            prep_spectra = iprep_spectra,
            .before = 1)

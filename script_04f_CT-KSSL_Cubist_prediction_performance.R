@@ -6,14 +6,14 @@ library("lubridate")
 library("qs")
 
 ## Folders
-mnt.dir <- "~/mnt-ringtrial/"
 # mnt.dir <- "~/projects/mnt-ringtrial/"
-dir.preprocessed <- paste0(mnt.dir, "preprocessed/")
-dir.predictions <- paste0(mnt.dir, "predictions/CT-KSSL_MBL/")
+mnt.dir <- "~/mnt-ringtrial/"
+dir.predictions <- paste0(mnt.dir, "predictions/CT-KSSL_Cubist/")
 
 ## Modeling combinations
-modeling.combinations <- read_csv("outputs/tab_CT-KSSL_PLSR_10CVrep1_performance_metrics.csv")
-modeling.combinations
+modeling.combinations <- read_csv("outputs/modeling_combinations_CT-KSSL_Cubist.csv")
+modeling.combinations <- modeling.combinations %>%
+  mutate(prep_transform = "logTransform")
 
 test.ids <- qread("outputs/RT_test_ids.qs")
 
@@ -37,14 +37,14 @@ for(i in 1:nrow(modeling.combinations)) {
     
     predictions <- qread(paste0(dir.predictions,
                                 "tab_predictions_",
-                                itrain, "_MBL_",
+                                itrain, "_",
                                 isoil_property, "_",
                                 iprep_transform, "_",
                                 iprep_spectra, ".qs")) %>%
       filter(sample_id %in% test.ids)
     
     predictions.performance <- predictions %>%
-      group_by(organization, ct_subset, diss_method, k_diss) %>%
+      group_by(organization, ct_subset) %>%
       summarise(n = n(),
                 rmse = rmse_vec(truth = observed, estimate = predicted),
                 bias = msd_vec(truth = observed, estimate = predicted),
@@ -52,23 +52,20 @@ for(i in 1:nrow(modeling.combinations)) {
                 ccc = ccc_vec(truth = observed, estimate = predicted, bias = T),
                 rpd = rpd_vec(truth = observed, estimate = predicted),
                 rpiq = rpiq_vec(truth = observed, estimate = predicted),
-                .groups = "drop") %>%
-      group_by(organization, ct_subset) %>%
-      summarise(across(all_of(c("n", "rmse", "bias", "rsq", "ccc", "rpd", "rpiq")),
-                       mean), .groups = "drop")
+                .groups = "drop")
     
   } else {
     
     predictions <- qread(paste0(dir.predictions,
                                 "tab_predictions_",
-                                itrain, "_MBL_",
+                                itrain, "_",
                                 isoil_property, "_",
                                 iprep_transform, "_",
                                 iprep_spectra, ".qs")) %>%
       filter(sample_id %in% test.ids)
     
     predictions.performance <- predictions %>%
-      group_by(organization, diss_method, k_diss) %>%
+      group_by(organization) %>%
       summarise(n = n(),
                 rmse = rmse_vec(truth = observed, estimate = predicted),
                 bias = msd_vec(truth = observed, estimate = predicted),
@@ -76,10 +73,7 @@ for(i in 1:nrow(modeling.combinations)) {
                 ccc = ccc_vec(truth = observed, estimate = predicted, bias = T),
                 rpd = rpd_vec(truth = observed, estimate = predicted),
                 rpiq = rpiq_vec(truth = observed, estimate = predicted),
-                .groups = "drop") %>%
-      group_by(organization) %>%
-      summarise(across(all_of(c("n", "rmse", "bias", "rsq", "ccc", "rpd", "rpiq")),
-                       mean), .groups = "drop")
+                .groups = "drop")
     
   }
   

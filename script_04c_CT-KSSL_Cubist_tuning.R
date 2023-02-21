@@ -29,7 +29,7 @@ modeling.combinations
 
 ## Automated calibration with 10-fold cross-validation
 
-i=1
+i=8
 for(i in 1:nrow(modeling.combinations)) {
   
   # Iterators
