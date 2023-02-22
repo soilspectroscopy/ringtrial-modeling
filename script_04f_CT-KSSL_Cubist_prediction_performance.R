@@ -107,7 +107,7 @@ write_csv(performance.metrics,
 
 ## Visualization
 
-data <- read_csv(paste0("outputs/tab_CT-KSSL_MBL_test_performance.csv"))
+data <- read_csv(paste0("outputs/tab_CT-KSSL_Cubist_test_performance.csv"))
 
 p.ccc <- ggplot(data) +
   geom_boxplot(aes(x = prep_spectra, y = ccc, color = prep_spectra),
