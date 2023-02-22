@@ -1,6 +1,16 @@
 Soil spectroscopy ring trial
 ================
 
+-   [Overview](#overview)
+-   [Modeling framework](#modeling-framework)
+-   [Descriptive statistics](#descriptive-statistics)
+-   [Internal 10-fold
+    Cross-validation](#internal-10-fold-cross-validation)
+-   [Calibration transfer](#calibration-transfer)
+    -   [PLSR](#plsr)
+    -   [MBL](#mbl)
+    -   [Cubist](#cubist)
+
 ## Overview
 
 Inter-laboratory comparison of soil spectral measurements as part of the
@@ -40,10 +50,10 @@ model types are evaluated with a subset of the KSSL with 15,000 samples.
 -   Performance metrics: `RMSE`, `bias`, `RPIQ`, `Rsq`, `Lin's CCC`.
 
 Statistical analysis is performed on `RMSE` values using non-parametric
-`Kruskal-Wallis` test for comparing preprocessing and model types at a
-significance level of 95%. While the statistical tests are performed on
-the RMSE values, Lin’s CCC is displayed for the sake of visualization as
-it both encompasses accuracy and bias trend.
+permutation test for comparing experimental factors at a significance
+level of 95%. While the statistical tests are performed on the RMSE
+values, Lin’s CCC is displayed better visualization reference as it both
+encompasses accuracy and bias trend into a scaled parameter.
 
 ## Descriptive statistics
 
@@ -125,42 +135,44 @@ Test (n=20) performance
 
 Calibration performance
 
-| soil_property    | prep_transform | prep_spectra    | committees | neighbors |     n | rmse |  bias |  rsq |  ccc |  rpd | rpiq |
-|:-----------------|:---------------|:----------------|-----------:|----------:|------:|-----:|------:|-----:|-----:|-----:|-----:|
-| carbon_org_perc  | logTransform   | BOC             |        100 |         5 | 14969 | 0.31 | -0.01 | 0.97 | 0.99 | 6.12 | 8.19 |
-| carbon_org_perc  | logTransform   | raw             |        100 |         5 | 14969 | 0.31 | -0.02 | 0.97 | 0.99 | 6.13 | 8.20 |
-| carbon_org_perc  | logTransform   | SG1stDer        |        100 |         5 | 14969 | 0.31 | -0.02 | 0.97 | 0.99 | 6.25 | 8.37 |
-| carbon_org_perc  | logTransform   | SNV             |        100 |         5 | 14969 | 0.30 | -0.01 | 0.98 | 0.99 | 6.33 | 8.46 |
-| carbon_org_perc  | logTransform   | SNVplusSG1stDer |        100 |         5 | 14969 | 0.31 | -0.02 | 0.97 | 0.99 | 6.21 | 8.31 |
-| carbon_org_perc  | logTransform   | SST             |        100 |         5 | 14969 | 0.30 | -0.01 | 0.98 | 0.99 | 6.33 | 8.46 |
-| carbon_org_perc  | logTransform   | wavelet         |        100 |         9 | 14969 | 0.26 |  0.00 | 0.98 | 0.99 | 7.24 | 9.69 |
-| clay_perc        | logTransform   | BOC             |        100 |         5 | 14888 | 3.91 | -0.01 | 0.94 | 0.97 | 4.00 | 5.67 |
-| clay_perc        | logTransform   | raw             |        100 |         5 | 14888 | 3.90 |  0.00 | 0.94 | 0.97 | 4.01 | 5.69 |
-| clay_perc        | logTransform   | SG1stDer        |        100 |         5 | 14888 | 3.75 |  0.03 | 0.94 | 0.97 | 4.17 | 5.92 |
-| clay_perc        | logTransform   | SNV             |        100 |         5 | 14888 | 3.93 | -0.01 | 0.94 | 0.97 | 3.98 | 5.65 |
-| clay_perc        | logTransform   | SNVplusSG1stDer |        100 |         5 | 14888 | 3.71 |  0.00 | 0.94 | 0.97 | 4.22 | 5.98 |
-| clay_perc        | logTransform   | SST             |        100 |         5 | 14888 | 3.92 | -0.01 | 0.94 | 0.97 | 3.98 | 5.65 |
-| clay_perc        | logTransform   | wavelet         |        100 |         5 | 14888 | 3.67 |  0.04 | 0.94 | 0.97 | 4.26 | 6.05 |
-| pH_H20           | logTransform   | BOC             |        100 |         5 | 15000 | 0.39 |  0.00 | 0.91 | 0.95 | 3.36 | 5.56 |
-| pH_H20           | logTransform   | raw             |        100 |         5 | 15000 | 0.39 |  0.00 | 0.91 | 0.95 | 3.33 | 5.50 |
-| pH_H20           | logTransform   | SG1stDer        |        100 |         5 | 15000 | 0.36 |  0.00 | 0.92 | 0.96 | 3.64 | 6.01 |
-| pH_H20           | logTransform   | SNV             |        100 |         5 | 15000 | 0.37 |  0.00 | 0.92 | 0.96 | 3.52 | 5.81 |
-| pH_H20           | logTransform   | SNVplusSG1stDer |        100 |         5 | 15000 | 0.36 |  0.00 | 0.92 | 0.96 | 3.64 | 6.02 |
-| pH_H20           | logTransform   | SST             |        100 |         5 | 15000 | 0.37 |  0.00 | 0.92 | 0.96 | 3.52 | 5.81 |
-| pH_H20           | logTransform   | wavelet         |        100 |         5 | 15000 | 0.34 |  0.00 | 0.93 | 0.96 | 3.84 | 6.35 |
-| potassium_cmolkg | logTransform   | BOC             |        100 |         5 | 15000 | 0.52 | -0.02 | 0.78 | 0.88 | 2.13 | 2.79 |
-| potassium_cmolkg | logTransform   | raw             |        100 |         5 | 15000 | 0.53 | -0.02 | 0.77 | 0.87 | 2.10 | 2.75 |
-| potassium_cmolkg | logTransform   | SG1stDer        |        100 |         5 | 15000 | 0.51 | -0.02 | 0.79 | 0.88 | 2.20 | 2.88 |
-| potassium_cmolkg | logTransform   | SNV             |        100 |         5 | 15000 | 0.52 | -0.01 | 0.78 | 0.88 | 2.13 | 2.79 |
-| potassium_cmolkg | logTransform   | SNVplusSG1stDer |        100 |         5 | 15000 | 0.51 | -0.02 | 0.79 | 0.88 | 2.18 | 2.86 |
-| potassium_cmolkg | logTransform   | SST             |        100 |         5 | 15000 | 0.52 | -0.01 | 0.78 | 0.88 | 2.13 | 2.79 |
-| potassium_cmolkg | logTransform   | wavelet         |        100 |         9 | 15000 | 0.51 | -0.01 | 0.79 | 0.88 | 2.19 | 2.87 |
+| soil_property    | prep_transform   | prep_spectra    | committees | neighbors |     n | rmse |  bias |  rsq |  ccc |  rpd | rpiq |
+|:-----------------|:-----------------|:----------------|-----------:|----------:|------:|-----:|------:|-----:|-----:|-----:|-----:|
+| carbon_org_perc  | logTransform     | BOC             |        100 |         5 | 14969 | 0.31 | -0.01 | 0.97 | 0.99 | 6.12 | 8.19 |
+| carbon_org_perc  | logTransform     | raw             |        100 |         5 | 14969 | 0.31 | -0.02 | 0.97 | 0.99 | 6.13 | 8.20 |
+| carbon_org_perc  | logTransform     | SG1stDer        |        100 |         5 | 14969 | 0.31 | -0.02 | 0.97 | 0.99 | 6.25 | 8.37 |
+| carbon_org_perc  | logTransform     | SNV             |        100 |         5 | 14969 | 0.30 | -0.01 | 0.98 | 0.99 | 6.33 | 8.46 |
+| carbon_org_perc  | logTransform     | SNVplusSG1stDer |        100 |         5 | 14969 | 0.31 | -0.02 | 0.97 | 0.99 | 6.21 | 8.31 |
+| carbon_org_perc  | logTransform     | SST             |        100 |         5 | 14969 | 0.30 | -0.01 | 0.98 | 0.99 | 6.33 | 8.46 |
+| carbon_org_perc  | logTransform     | wavelet         |        100 |         9 | 14969 | 0.26 |  0.00 | 0.98 | 0.99 | 7.24 | 9.69 |
+| clay_perc        | withoutTransform | BOC             |        100 |         5 | 14888 | 3.91 | -0.01 | 0.94 | 0.97 | 4.00 | 5.67 |
+| clay_perc        | withoutTransform | raw             |        100 |         5 | 14888 | 3.90 |  0.00 | 0.94 | 0.97 | 4.01 | 5.69 |
+| clay_perc        | withoutTransform | SG1stDer        |        100 |         5 | 14888 | 3.75 |  0.03 | 0.94 | 0.97 | 4.17 | 5.92 |
+| clay_perc        | withoutTransform | SNV             |        100 |         5 | 14888 | 3.93 | -0.01 | 0.94 | 0.97 | 3.98 | 5.65 |
+| clay_perc        | withoutTransform | SNVplusSG1stDer |        100 |         5 | 14888 | 3.71 |  0.00 | 0.94 | 0.97 | 4.22 | 5.98 |
+| clay_perc        | withoutTransform | SST             |        100 |         5 | 14888 | 3.92 | -0.01 | 0.94 | 0.97 | 3.98 | 5.65 |
+| clay_perc        | withoutTransform | wavelet         |        100 |         5 | 14888 | 3.67 |  0.04 | 0.94 | 0.97 | 4.26 | 6.05 |
+| pH_H20           | withoutTransform | BOC             |        100 |         5 | 15000 | 0.39 |  0.00 | 0.91 | 0.95 | 3.36 | 5.56 |
+| pH_H20           | withoutTransform | raw             |        100 |         5 | 15000 | 0.39 |  0.00 | 0.91 | 0.95 | 3.33 | 5.50 |
+| pH_H20           | withoutTransform | SG1stDer        |        100 |         5 | 15000 | 0.36 |  0.00 | 0.92 | 0.96 | 3.64 | 6.01 |
+| pH_H20           | withoutTransform | SNV             |        100 |         5 | 15000 | 0.37 |  0.00 | 0.92 | 0.96 | 3.52 | 5.81 |
+| pH_H20           | withoutTransform | SNVplusSG1stDer |        100 |         5 | 15000 | 0.36 |  0.00 | 0.92 | 0.96 | 3.64 | 6.02 |
+| pH_H20           | withoutTransform | SST             |        100 |         5 | 15000 | 0.37 |  0.00 | 0.92 | 0.96 | 3.52 | 5.81 |
+| pH_H20           | withoutTransform | wavelet         |        100 |         5 | 15000 | 0.34 |  0.00 | 0.93 | 0.96 | 3.84 | 6.35 |
+| potassium_cmolkg | logTransform     | BOC             |        100 |         5 | 15000 | 0.52 | -0.02 | 0.78 | 0.88 | 2.13 | 2.79 |
+| potassium_cmolkg | logTransform     | raw             |        100 |         5 | 15000 | 0.53 | -0.02 | 0.77 | 0.87 | 2.10 | 2.75 |
+| potassium_cmolkg | logTransform     | SG1stDer        |        100 |         5 | 15000 | 0.51 | -0.02 | 0.79 | 0.88 | 2.20 | 2.88 |
+| potassium_cmolkg | logTransform     | SNV             |        100 |         5 | 15000 | 0.52 | -0.01 | 0.78 | 0.88 | 2.13 | 2.79 |
+| potassium_cmolkg | logTransform     | SNVplusSG1stDer |        100 |         5 | 15000 | 0.51 | -0.02 | 0.79 | 0.88 | 2.18 | 2.86 |
+| potassium_cmolkg | logTransform     | SST             |        100 |         5 | 15000 | 0.52 | -0.01 | 0.78 | 0.88 | 2.13 | 2.79 |
+| potassium_cmolkg | logTransform     | wavelet         |        100 |         9 | 15000 | 0.51 | -0.01 | 0.79 | 0.88 | 2.19 | 2.87 |
 
 Test (n=20) performance
 
+<img src="outputs/plot_CT-KSSL_Cubist_test_performance.png" width=100% heigth=100%>
+
 [^1]: For Cubist, PCA compression is performed before model fitting
-    using `cumvar= 99.99%` on the reference space (KSSL subset) with all
-    the RT instruments projected onto it.
+    using `cumvar = 99.99%` on the reference space (KSSL subset) with
+    all the RT instruments projected onto it.
 
 [^2]: Soil properties are `log` transformed if
     `-3 < skewness or kurtosis > 3`. Check descriptive statistics for a

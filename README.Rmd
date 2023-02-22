@@ -2,11 +2,11 @@
 title: "Soil spectroscopy ring trial"
 output: 
   github_document:
-  toc: true
-toc_depth: 4
+    toc: true
+    toc_depth: 4
 editor_options: 
   markdown: 
-  wrap: 72
+    wrap: 72
 ---
   
 ```{r setup, include=FALSE}
@@ -40,10 +40,10 @@ For calibration transfer analysis, 20 samples held out from the spectral subspac
 - Soil properties: `TC`, `clay`, `pH`, `K`[^2].  
 - Performance metrics: `RMSE`, `bias`, `RPIQ`, `Rsq`, `Lin's CCC`.
 
-[^1]: For Cubist, PCA compression is performed before model fitting using `cumvar= 99.99%` on the reference space (KSSL subset) with all the RT instruments projected onto it.  
+[^1]: For Cubist, PCA compression is performed before model fitting using `cumvar = 99.99%` on the reference space (KSSL subset) with all the RT instruments projected onto it.  
 [^2]: Soil properties are `log` transformed if `-3 < skewness or kurtosis > 3`. Check descriptive statistics for a summary. In addition, the performance metrics are reported on log space for those cases.  
 
-Statistical analysis is performed on `RMSE` values using non-parametric `Kruskal-Wallis` test for comparing preprocessing and model types at a significance level of 95%. While the statistical tests are performed on the RMSE values, Lin's CCC is displayed for the sake of visualization as it both encompasses accuracy and bias trend.
+Statistical analysis is performed on `RMSE` values using non-parametric permutation test for comparing experimental factors at a significance level of 95%. While the statistical tests are performed on the RMSE values, Lin's CCC is displayed better visualization reference as it both encompasses accuracy and bias trend into a scaled parameter.
 
 ## Descriptive statistics
 
@@ -106,3 +106,5 @@ read_csv("outputs/tab_CT-KSSL_Cubist_10CVrep1_performance_metrics.csv") %>%
 ```
 
 Test (n=20) performance
+
+<img src="outputs/plot_CT-KSSL_Cubist_test_performance.png" width=100% heigth=100%>

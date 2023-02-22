@@ -12,8 +12,7 @@ dir.predictions <- paste0(mnt.dir, "predictions/CT-KSSL_Cubist/")
 
 ## Modeling combinations
 modeling.combinations <- read_csv("outputs/modeling_combinations_CT-KSSL_Cubist.csv")
-modeling.combinations <- modeling.combinations %>%
-  mutate(prep_transform = "logTransform")
+modeling.combinations
 
 test.ids <- qread("outputs/RT_test_ids.qs")
 
@@ -104,7 +103,7 @@ performance.metrics %>%
   summarise_all(function(x) {sum(is.na(x))})
 
 write_csv(performance.metrics,
-          paste0("outputs/tab_CT-KSSL_MBL_test_performance.csv"))
+          paste0("outputs/tab_CT-KSSL_Cubist_test_performance.csv"))
 
 ## Visualization
 
@@ -120,6 +119,6 @@ p.ccc <- ggplot(data) +
   theme_light() +
   theme(legend.position = "bottom"); p.ccc
 
-ggsave(paste0("outputs/plot_CT-KSSL_MBL_test_performance.png"),
+ggsave(paste0("outputs/plot_CT-KSSL_Cubist_test_performance.png"),
        p.ccc, dpi = 300, width = 8, height = 7,
        units = "in", scale = 1)
