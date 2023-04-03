@@ -77,7 +77,7 @@ boc.check <- cv.performance %>%
   mutate(ccc_flag = ifelse(ccc <= average_ccc-0.1, TRUE, FALSE), .before = average_ccc) %>%
   ungroup()
 
-View(boc.check)
+# View(boc.check)
 
 boc.check %>%
   filter(ccc_flag) %>%
@@ -87,7 +87,7 @@ clip.boc.check <- boc.check %>%
   filter(ccc_flag) %>%
   count(organization)
 
-clipr::write_clip(clip.boc.check)
+# clipr::write_clip(clip.boc.check)
 #   organization     n
 # 1            4     2: Argonne - PerkinElmer Spectrum 100
 # 2            6     3: AgroCares - Alpha I
@@ -118,7 +118,7 @@ preprocessed %>%
   scale_x_continuous(breaks = c(650, 1200, 1800, 2400, 3000, 3600, 4000),
                      trans = "reverse") +
   geom_line(alpha = 0.25) +
-  labs(title = paste0("MIR return for instrument ", iorganization, ", BOC preprocessing")) +
+  # labs(title = paste0("MIR return for instrument ", iorganization, ", BOC preprocessing")) +
   theme_light()
 
 preprocessed.baseline <- preprocessed %>%
